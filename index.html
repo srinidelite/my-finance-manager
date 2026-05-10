@@ -1,9 +1,9 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kiwi Finance — Personal Tracker NZD</title>
+<title>Kiwi Finance — Monthly Tracker NZD</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
@@ -18,10 +18,8 @@
     font-family:'Segoe UI',system-ui,sans-serif;
   }
   body{background:var(--bg);color:var(--text);min-height:100vh;font-size:15px}
-
-  .app{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
-
-  .sidebar{background:var(--text);color:#fff;padding:0;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+  .app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+  .sidebar{background:var(--text);color:#fff;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
   .sidebar-header{padding:20px 16px 12px;border-bottom:1px solid rgba(255,255,255,.1)}
   .sidebar-logo{font-size:17px;font-weight:600;letter-spacing:-0.3px}
   .sidebar-sub{font-size:12px;color:rgba(255,255,255,.45);margin-top:2px}
@@ -31,14 +29,11 @@
   .nav-item.active{background:rgba(255,255,255,.15);color:#fff}
   .nav-item i{font-size:17px;width:20px}
   .nav-section{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.3);padding:12px 10px 4px;font-weight:600}
-
   .main{overflow-y:auto;padding:24px}
   .page{display:none}
   .page.active{display:block}
-
   h1{font-size:22px;font-weight:600;margin-bottom:4px}
   .page-sub{color:var(--text2);font-size:14px;margin-bottom:20px}
-
   .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px}
   .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
   .card-label{font-size:12px;color:var(--text2);margin-bottom:6px}
@@ -49,17 +44,15 @@
   .card.blue{border-color:#b5d0f0;background:var(--blue-bg)}
   .card.amber{border-color:#f0d4a8;background:var(--amber-bg)}
   .card.purple{border-color:#cec0f0;background:var(--purple-bg)}
-
   .section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:16px}
-  .section-title{font-size:15px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+  .section-title{font-size:15px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
   .section-title span{font-size:12px;font-weight:400;color:var(--text2)}
-
   .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .form-grid.three{grid-template-columns:1fr 1fr 1fr}
   .form-group{display:flex;flex-direction:column;gap:5px}
   .form-group label{font-size:12px;font-weight:500;color:var(--text2)}
   input,select,textarea{border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;font-size:14px;background:var(--surface);color:var(--text);width:100%;outline:none;transition:border .15s}
-  input:focus,select:focus{border-color:#888}
+  input:focus,select:focus,textarea:focus{border-color:#888}
   .btn{padding:9px 16px;border-radius:var(--radius-sm);border:none;cursor:pointer;font-size:14px;font-weight:500;transition:all .15s}
   .btn-primary{background:var(--text);color:#fff}
   .btn-primary:hover{opacity:.85}
@@ -67,7 +60,7 @@
   .btn-danger{background:var(--red-bg);color:var(--red);border:1px solid #f5c4bc}
   .btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border)}
   .btn-ghost:hover{background:var(--surface2)}
-
+  .btn-blue{background:var(--blue-bg);color:var(--blue);border:1px solid #b5d0f0}
   .list-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
   .list-item:last-child{border-bottom:none;padding-bottom:0}
   .list-icon{width:34px;height:34px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
@@ -76,42 +69,49 @@
   .list-meta{font-size:12px;color:var(--text2);margin-top:1px}
   .list-amount{font-size:15px;font-weight:600;white-space:nowrap}
   .list-actions{display:flex;gap:6px;flex-shrink:0}
-
   .badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500}
   .badge-green{background:var(--green-bg);color:var(--green)}
   .badge-red{background:var(--red-bg);color:var(--red)}
   .badge-blue{background:var(--blue-bg);color:var(--blue)}
   .badge-amber{background:var(--amber-bg);color:var(--amber)}
   .badge-purple{background:var(--purple-bg);color:var(--purple)}
-
+  .badge-gray{background:var(--surface2);color:var(--text2)}
   .progress-bar{height:8px;background:var(--surface2);border-radius:4px;overflow:hidden;margin-top:6px}
   .progress-fill{height:100%;border-radius:4px;transition:width .5s}
-
   .chart-wrap{position:relative;width:100%;height:260px}
-  .chart-wrap-sm{position:relative;width:100%;height:200px}
-
+  .chart-wrap-sm{position:relative;width:100%;height:220px}
   .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-
+  .three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
   .empty-state{text-align:center;padding:32px 16px;color:var(--text2);font-size:14px}
   .empty-state i{font-size:32px;display:block;margin-bottom:8px;color:var(--text3)}
-
   .goal-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px}
   .goal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
   .goal-name{font-size:14px;font-weight:600}
   .goal-amounts{display:flex;align-items:baseline;gap:4px;font-size:13px;color:var(--text2)}
   .goal-amounts strong{font-size:16px;color:var(--text);font-weight:600}
-
   .tag{display:inline-flex;padding:1px 6px;border-radius:4px;font-size:11px;background:var(--surface2);color:var(--text2)}
   .freq-badge{font-size:10px;padding:1px 5px;border-radius:3px;background:var(--blue-bg);color:var(--blue);margin-left:4px}
-
+  .carry-box{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2);margin-top:2px}
+  .carry-box input{width:auto}
+  .compare-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);gap:10px}
+  .compare-row:last-child{border-bottom:none}
+  .compare-left{min-width:0}
+  .compare-title{font-size:14px;font-weight:500}
+  .compare-sub{font-size:12px;color:var(--text2)}
+  .compare-right{text-align:right;font-size:13px}
+  .kpi-inline{display:flex;flex-wrap:wrap;gap:8px}
+  .month-chip{display:inline-flex;align-items:center;padding:5px 9px;border-radius:16px;background:var(--surface2);font-size:12px;color:var(--text2)}
+  .inline-actions{display:flex;gap:8px;flex-wrap:wrap}
   .toast{position:fixed;bottom:20px;right:20px;background:var(--text);color:#fff;padding:10px 16px;border-radius:var(--radius-sm);font-size:13px;opacity:0;transform:translateY(10px);transition:all .2s;pointer-events:none;z-index:999}
   .toast.show{opacity:1;transform:translateY(0)}
-
+  @media(max-width:900px){
+    .two-col,.three-col,.form-grid.three{grid-template-columns:1fr 1fr}
+  }
   @media(max-width:700px){
     .app{grid-template-columns:1fr}
     .sidebar{height:auto;position:static}
-    .two-col{grid-template-columns:1fr}
-    .form-grid.three{grid-template-columns:1fr 1fr}
+    .two-col,.three-col,.form-grid,.form-grid.three{grid-template-columns:1fr}
+    .main{padding:16px}
   }
 </style>
 </head>
@@ -120,30 +120,63 @@
   <aside class="sidebar">
     <div class="sidebar-header">
       <div class="sidebar-logo"><i class="ti ti-leaf" style="color:#7dd4a0"></i> Kiwi Finance</div>
-      <div class="sidebar-sub">Personal Tracker · NZD</div>
+      <div class="sidebar-sub">Monthly Tracker · NZD</div>
     </div>
     <nav class="nav">
       <div class="nav-section">Overview</div>
       <div class="nav-item active" data-page="dashboard"><i class="ti ti-layout-dashboard"></i>Dashboard</div>
-      <div class="nav-section">Income &amp; Expenses</div>
+      <div class="nav-section">Income & Expenses</div>
       <div class="nav-item" data-page="income"><i class="ti ti-cash"></i>Income</div>
       <div class="nav-item" data-page="expenses"><i class="ti ti-receipt"></i>Expenses</div>
       <div class="nav-section">Wealth</div>
       <div class="nav-item" data-page="investments"><i class="ti ti-trending-up"></i>Investments</div>
-      <div class="nav-item" data-page="goals"><i class="ti ti-flag"></i>Goals &amp; Travel</div>
+      <div class="nav-item" data-page="goals"><i class="ti ti-flag"></i>Goals & Travel</div>
     </nav>
   </aside>
 
   <main class="main">
-
-    <!-- DASHBOARD -->
     <div class="page active" id="page-dashboard">
       <h1>Dashboard</h1>
       <div class="page-sub" id="dash-date"></div>
+
+      <div class="section">
+        <div class="section-title">Monthly kickoff <span id="kickoff-title"></span></div>
+        <div class="form-grid three" style="margin-bottom:12px">
+          <div class="form-group">
+            <label>Current month</label>
+            <select id="month-select"></select>
+          </div>
+          <div class="form-group">
+            <label>Previous month</label>
+            <input id="prev-month-display" type="text" disabled>
+          </div>
+          <div class="form-group" style="justify-content:flex-end">
+            <label>&nbsp;</label>
+            <div class="inline-actions">
+              <button class="btn btn-primary" onclick="startNextMonth()">Start next month</button>
+              <button class="btn btn-ghost" onclick="closeCurrentMonth()">Close month</button>
+            </div>
+          </div>
+        </div>
+        <div class="kpi-inline" id="kickoff-summary"></div>
+      </div>
+
       <div class="cards" id="dash-cards"></div>
+
       <div class="two-col">
         <div class="section">
-          <div class="section-title">Monthly cashflow <span id="dash-month-label"></span></div>
+          <div class="section-title">Current vs previous <span id="dash-month-label"></span></div>
+          <div id="comparison-list"></div>
+        </div>
+        <div class="section">
+          <div class="section-title">Carry-forward review</div>
+          <div id="carry-review"></div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="section">
+          <div class="section-title">Monthly cashflow <span>Last 6 months</span></div>
           <div class="chart-wrap"><canvas id="cashflowChart" role="img" aria-label="Monthly income vs expenses bar chart">Monthly cashflow comparison.</canvas></div>
         </div>
         <div class="section">
@@ -151,18 +184,18 @@
           <div class="chart-wrap"><canvas id="expenseDonut" role="img" aria-label="Expense category breakdown donut chart">Expense categories.</canvas></div>
         </div>
       </div>
+
       <div class="section">
         <div class="section-title">Goals progress</div>
         <div id="dash-goals"></div>
       </div>
     </div>
 
-    <!-- INCOME -->
     <div class="page" id="page-income">
       <h1>Income</h1>
-      <div class="page-sub">Your salary and other income sources</div>
+      <div class="page-sub">Monthly income items are stored per month and can be carried into the next month.</div>
       <div class="section">
-        <div class="section-title">Add income source</div>
+        <div class="section-title">Add income source <span id="income-month-label"></span></div>
         <div class="form-grid three" style="margin-bottom:12px">
           <div class="form-group">
             <label>Source name</label>
@@ -181,6 +214,18 @@
               <option value="annual">Annual</option>
             </select>
           </div>
+          <div class="form-group">
+            <label>Category tag</label>
+            <select id="inc-type">
+              <option value="Fixed">Fixed recurring</option>
+              <option value="Variable">Variable recurring</option>
+              <option value="One-off">One-off</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label style="margin-bottom:4px">Carry forward</label>
+            <label class="carry-box"><input id="inc-carry" type="checkbox" checked> Copy to next month</label>
+          </div>
         </div>
         <button class="btn btn-primary" onclick="addIncome()">Add income source</button>
       </div>
@@ -190,13 +235,12 @@
       </div>
     </div>
 
-    <!-- EXPENSES -->
     <div class="page" id="page-expenses">
       <h1>Expenses</h1>
-      <div class="page-sub">Track rent, bills, food, and all other spending</div>
+      <div class="page-sub">Recurring items like rent and utilities can be copied to the next month automatically.</div>
       <div class="section">
-        <div class="section-title">Add expense</div>
-        <div class="form-grid" style="margin-bottom:12px">
+        <div class="section-title">Add expense <span id="expense-month-label"></span></div>
+        <div class="form-grid three" style="margin-bottom:12px">
           <div class="form-group">
             <label>Expense name</label>
             <input id="exp-name" type="text" placeholder="e.g. Rent, Groceries, Power">
@@ -209,7 +253,7 @@
             <label>Category</label>
             <select id="exp-cat">
               <option value="Housing">Housing</option>
-              <option value="Food">Food &amp; Groceries</option>
+              <option value="Food">Food & Groceries</option>
               <option value="Transport">Transport</option>
               <option value="Utilities">Utilities</option>
               <option value="Health">Health</option>
@@ -228,6 +272,18 @@
               <option value="one-off">One-off</option>
             </select>
           </div>
+          <div class="form-group">
+            <label>Type</label>
+            <select id="exp-type">
+              <option value="Fixed">Fixed recurring</option>
+              <option value="Variable">Variable recurring</option>
+              <option value="One-off">One-off</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label style="margin-bottom:4px">Carry forward</label>
+            <label class="carry-box"><input id="exp-carry" type="checkbox" checked> Copy to next month</label>
+          </div>
         </div>
         <button class="btn btn-primary" onclick="addExpense()">Add expense</button>
       </div>
@@ -237,7 +293,6 @@
       </div>
     </div>
 
-    <!-- INVESTMENTS -->
     <div class="page" id="page-investments">
       <h1>Investments</h1>
       <div class="page-sub">Stocks, savings, KiwiSaver and other holdings</div>
@@ -295,9 +350,8 @@
       </div>
     </div>
 
-    <!-- GOALS -->
     <div class="page" id="page-goals">
-      <h1>Goals &amp; Travel</h1>
+      <h1>Goals & Travel</h1>
       <div class="page-sub">Set savings targets for upcoming trips and big purchases</div>
       <div class="section">
         <div class="section-title">Add goal</div>
@@ -337,53 +391,180 @@
       </div>
       <div id="goals-list"></div>
     </div>
-
   </main>
 </div>
+
 <div class="toast" id="toast"></div>
 
 <script>
-const KEY = 'kiwi_finance_v1';
-let state = JSON.parse(localStorage.getItem(KEY) || 'null') || {
-  income:[
-    {id:1,name:'Salary',amount:6500,freq:'monthly'},
-    {id:2,name:'Side hustle',amount:200,freq:'monthly'}
-  ],
-  expenses:[
-    {id:1,name:'Rent',amount:450,freq:'weekly',cat:'Housing'},
-    {id:2,name:'Groceries',amount:150,freq:'weekly',cat:'Food'},
-    {id:3,name:'Power',amount:120,freq:'monthly',cat:'Utilities'},
-    {id:4,name:'Internet',amount:80,freq:'monthly',cat:'Utilities'},
-    {id:5,name:'Transport',amount:80,freq:'fortnightly',cat:'Transport'},
-  ],
-  investments:[
-    {id:1,name:'ANZ Shares',type:'Stocks',value:8500,cost:7200,contrib:300,notes:'via Sharesies'},
-    {id:2,name:'KiwiSaver',type:'KiwiSaver',value:22000,cost:18000,contrib:150,notes:''},
-    {id:3,name:'Emergency savings',type:'Savings',value:5000,cost:5000,contrib:200,notes:'ANZ savings account'},
-  ],
-  goals:[
-    {id:1,name:'Japan trip',target:5000,saved:1200,date:'2025-10-01',type:'Travel',monthly:400},
-    {id:2,name:'Emergency fund',target:10000,saved:5000,date:'2026-06-01',type:'Emergency',monthly:500},
-  ]
-};
+const KEY = 'kiwi_finance_v2';
 
-function save(){localStorage.setItem(KEY,JSON.stringify(state))}
-function nextId(arr){return arr.length?Math.max(...arr.map(x=>x.id))+1:1}
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+function getMonthKey(date){
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2,'0');
+  return `${y}-${m}`;
+}
+function getMonthLabel(key){
+  const [y,m] = key.split('-').map(Number);
+  return new Date(y, m-1, 1).toLocaleDateString('en-NZ',{month:'long',year:'numeric'});
+}
+function getPreviousMonthKey(key){
+  const [y,m] = key.split('-').map(Number);
+  const d = new Date(y, m-2, 1);
+  return getMonthKey(d);
+}
+function monthKeysSorted(){
+  return Object.keys(state.months).sort();
+}
+function buildDefaultMonth(labelKey){
+  return {
+    label:getMonthLabel(labelKey),
+    closed:false,
+    income:[
+      {id:1,name:'Salary',amount:6500,freq:'monthly',type:'Fixed',carry:true,source:'manual'},
+      {id:2,name:'Side hustle',amount:200,freq:'monthly',type:'Variable',carry:false,source:'manual'}
+    ],
+    expenses:[
+      {id:1,name:'Rent',amount:450,freq:'weekly',cat:'Housing',type:'Fixed',carry:true,source:'manual'},
+      {id:2,name:'Groceries',amount:150,freq:'weekly',cat:'Food',type:'Variable',carry:false,source:'manual'},
+      {id:3,name:'Power',amount:120,freq:'monthly',cat:'Utilities',type:'Fixed',carry:true,source:'manual'},
+      {id:4,name:'Internet',amount:80,freq:'monthly',cat:'Utilities',type:'Fixed',carry:true,source:'manual'},
+      {id:5,name:'Transport',amount:80,freq:'fortnightly',cat:'Transport',type:'Variable',carry:false,source:'manual'}
+    ],
+    notes:''
+  };
+}
+
+let state = JSON.parse(localStorage.getItem(KEY) || 'null') || (function(){
+  const currentMonth = getMonthKey(new Date());
+  return {
+    currentMonth,
+    months:{ [currentMonth]: buildDefaultMonth(currentMonth) },
+    investments:[
+      {id:1,name:'ANZ Shares',type:'Stocks',value:8500,cost:7200,contrib:300,notes:'via Sharesies'},
+      {id:2,name:'KiwiSaver',type:'KiwiSaver',value:22000,cost:18000,contrib:150,notes:''},
+      {id:3,name:'Emergency savings',type:'Savings',value:5000,cost:5000,contrib:200,notes:'ANZ savings account'}
+    ],
+    goals:[
+      {id:1,name:'Japan trip',target:5000,saved:1200,date:'2026-10-01',type:'Travel',monthly:400},
+      {id:2,name:'Emergency fund',target:10000,saved:5000,date:'2027-06-01',type:'Emergency',monthly:500}
+    ]
+  };
+})();
+
+function save(){ localStorage.setItem(KEY, JSON.stringify(state)); }
+function nextId(arr){ return arr.length ? Math.max(...arr.map(x=>x.id)) + 1 : 1; }
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2200);
+}
+function getCurrentMonth(){ return state.months[state.currentMonth]; }
+function getPreviousMonth(){ return state.months[getPreviousMonthKey(state.currentMonth)] || null; }
 
 const freqToMonthly={weekly:52/12,fortnightly:26/12,monthly:1,annual:1/12,'one-off':0};
-function toMonthly(amount,freq){return amount*(freqToMonthly[freq]||1)}
-function formatNZD(n){return'NZ$'+Math.round(n).toLocaleString('en-NZ')}
-function pct(a,b){return b?Math.min(100,Math.round(a/b*100)):0}
-
-function totalMonthlyIncome(){return state.income.reduce((s,x)=>s+toMonthly(x.amount,x.freq),0)}
-function totalMonthlyExpenses(){return state.expenses.reduce((s,x)=>s+toMonthly(x.amount,x.freq),0)}
-function totalInvestments(){return state.investments.reduce((s,x)=>s+x.value,0)}
+function toMonthly(amount,freq){ return amount*(freqToMonthly[freq]||1); }
+function formatNZD(n){ return 'NZ$'+Math.round(n || 0).toLocaleString('en-NZ'); }
+function pct(a,b){ return b ? Math.min(100, Math.round((a/b)*100)) : 0; }
+function totalMonthlyIncome(monthKey = state.currentMonth){
+  const month = state.months[monthKey];
+  return month ? month.income.reduce((s,x)=>s+toMonthly(x.amount,x.freq),0) : 0;
+}
+function totalMonthlyExpenses(monthKey = state.currentMonth){
+  const month = state.months[monthKey];
+  return month ? month.expenses.reduce((s,x)=>s+toMonthly(x.amount,x.freq),0) : 0;
+}
+function totalInvestments(){ return state.investments.reduce((s,x)=>s+(x.value||0),0); }
 
 const catColors={'Housing':'#5b3fa0','Food':'#2d7a4f','Transport':'#1a5fa8','Utilities':'#b85c00','Health':'#c0392b','Entertainment':'#1a8a9a','Clothing':'#8a5a1a','Other':'#6b6560'};
-function freqLabel(f){return{weekly:'weekly',fortnightly:'fortnightly',monthly:'monthly',annual:'annual','one-off':'one-off'}[f]||f}
+function freqLabel(f){ return {weekly:'weekly',fortnightly:'fortnightly',monthly:'monthly',annual:'annual','one-off':'one-off'}[f] || f; }
+function catIcon(c){ return {Housing:'home',Food:'salad',Transport:'car',Utilities:'bolt',Health:'heart',Entertainment:'device-gamepad',Clothing:'shirt',Other:'tag'}[c] || 'tag'; }
+function invIcon(t){ return {Stocks:'chart-line',Savings:'piggy-bank',KiwiSaver:'shield-check',ETF:'chart-area-line',Property:'home',Crypto:'currency-bitcoin',Other:'star'}[t] || 'star'; }
+function goalBadge(t){ return {Travel:'blue',Emergency:'amber',Purchase:'green',Property:'purple',Other:'green'}[t] || 'blue'; }
+function badgeForType(type){ return type==='Fixed'?'blue':type==='Variable'?'amber':'gray'; }
 
-// NAV
+function makeCarryClone(item, index){
+  return {
+    ...item,
+    id: Date.now() + index + Math.floor(Math.random()*1000),
+    source:'carry-forward'
+  };
+}
+
+function startNextMonth(){
+  const [y,m] = state.currentMonth.split('-').map(Number);
+  const d = new Date(y, m, 1);
+  const newKey = getMonthKey(d);
+
+  if(state.months[newKey]){
+    state.currentMonth = newKey;
+    save();
+    renderAll();
+    toast('Moved to existing month');
+    return;
+  }
+
+  const current = getCurrentMonth();
+  const incomeCarry = current.income.filter(x=>x.carry).map((x,i)=>makeCarryClone(x,i));
+  const expenseCarry = current.expenses.filter(x=>x.carry).map((x,i)=>makeCarryClone(x,i+5000));
+
+  state.months[newKey] = {
+    label:getMonthLabel(newKey),
+    closed:false,
+    income:incomeCarry,
+    expenses:expenseCarry,
+    notes:''
+  };
+  state.currentMonth = newKey;
+  save();
+  renderAll();
+  toast('Next month created from previous month');
+}
+
+function closeCurrentMonth(){
+  getCurrentMonth().closed = true;
+  save();
+  renderAll();
+  toast('Month marked as closed');
+}
+
+function populateMonthSelect(){
+  const select = document.getElementById('month-select');
+  const keys = monthKeysSorted();
+  select.innerHTML = keys.map(k=>`<option value="${k}" ${k===state.currentMonth?'selected':''}>${getMonthLabel(k)}</option>`).join('');
+  select.onchange = function(){
+    state.currentMonth = this.value;
+    save();
+    renderAll();
+  };
+  document.getElementById('prev-month-display').value = getPreviousMonth() ? getPreviousMonth().label : 'No previous month';
+}
+
+function getComparisonRows(){
+  const current = getCurrentMonth();
+  const previous = getPreviousMonth();
+  const prevIncome = previous ? totalMonthlyIncome(getPreviousMonthKey(state.currentMonth)) : 0;
+  const prevExpenses = previous ? totalMonthlyExpenses(getPreviousMonthKey(state.currentMonth)) : 0;
+  const incomeDelta = totalMonthlyIncome() - prevIncome;
+  const expenseDelta = totalMonthlyExpenses() - prevExpenses;
+
+  return [
+    {title:'Income', current:totalMonthlyIncome(), previous:prevIncome, delta:incomeDelta, meta:`${current.income.length} source(s)`},
+    {title:'Expenses', current:totalMonthlyExpenses(), previous:prevExpenses, delta:expenseDelta, meta:`${current.expenses.length} item(s)`},
+    {title:'Net', current:totalMonthlyIncome()-totalMonthlyExpenses(), previous:prevIncome-prevExpenses, delta:(totalMonthlyIncome()-totalMonthlyExpenses()) - (prevIncome-prevExpenses), meta:'Monthly surplus'}
+  ];
+}
+
+function getCarryReview(){
+  const current = getCurrentMonth();
+  const carriedIncome = current.income.filter(x=>x.source==='carry-forward').length;
+  const carriedExpenses = current.expenses.filter(x=>x.source==='carry-forward').length;
+  const newIncome = current.income.filter(x=>x.source!=='carry-forward').length;
+  const newExpenses = current.expenses.filter(x=>x.source!=='carry-forward').length;
+  return {carriedIncome, carriedExpenses, newIncome, newExpenses};
+}
+
 document.querySelectorAll('.nav-item').forEach(el=>{
   el.addEventListener('click',()=>{
     document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
@@ -395,27 +576,41 @@ document.querySelectorAll('.nav-item').forEach(el=>{
 });
 
 function addIncome(){
+  const month = getCurrentMonth();
   const name=document.getElementById('inc-name').value.trim();
   const amount=parseFloat(document.getElementById('inc-amount').value);
   const freq=document.getElementById('inc-freq').value;
-  if(!name||!amount){toast('Please fill name and amount');return}
-  state.income.push({id:nextId(state.income),name,amount,freq});
-  save();renderAll();toast('Income source added');
-  document.getElementById('inc-name').value='';document.getElementById('inc-amount').value='';
+  const type=document.getElementById('inc-type').value;
+  const carry=document.getElementById('inc-carry').checked;
+  if(!name || !amount){ toast('Please fill name and amount'); return; }
+  month.income.push({id:nextId(month.income),name,amount,freq,type,carry,source:'manual'});
+  save(); renderAll(); toast('Income source added');
+  document.getElementById('inc-name').value=''; document.getElementById('inc-amount').value='';
 }
-function deleteIncome(id){state.income=state.income.filter(x=>x.id!==id);save();renderAll();toast('Removed')}
+function deleteIncome(id){
+  const month = getCurrentMonth();
+  month.income = month.income.filter(x=>x.id!==id);
+  save(); renderAll(); toast('Removed');
+}
 
 function addExpense(){
+  const month = getCurrentMonth();
   const name=document.getElementById('exp-name').value.trim();
   const amount=parseFloat(document.getElementById('exp-amount').value);
   const cat=document.getElementById('exp-cat').value;
   const freq=document.getElementById('exp-freq').value;
-  if(!name||!amount){toast('Please fill name and amount');return}
-  state.expenses.push({id:nextId(state.expenses),name,amount,freq,cat});
-  save();renderAll();toast('Expense added');
-  document.getElementById('exp-name').value='';document.getElementById('exp-amount').value='';
+  const type=document.getElementById('exp-type').value;
+  const carry=document.getElementById('exp-carry').checked;
+  if(!name || !amount){ toast('Please fill name and amount'); return; }
+  month.expenses.push({id:nextId(month.expenses),name,amount,freq,cat,type,carry,source:'manual'});
+  save(); renderAll(); toast('Expense added');
+  document.getElementById('exp-name').value=''; document.getElementById('exp-amount').value='';
 }
-function deleteExpense(id){state.expenses=state.expenses.filter(x=>x.id!==id);save();renderAll();toast('Removed')}
+function deleteExpense(id){
+  const month = getCurrentMonth();
+  month.expenses = month.expenses.filter(x=>x.id!==id);
+  save(); renderAll(); toast('Removed');
+}
 
 function addInvestment(){
   const name=document.getElementById('inv-name').value.trim();
@@ -449,53 +644,101 @@ function updateGoalSaved(id,val){
   if(g){g.saved=parseFloat(val)||0;save();renderAll();}
 }
 
-let cashflowChart=null,expenseDonut=null,invDonut=null;
+let cashflowChart=null, expenseDonut=null, invDonut=null;
 
 function renderAll(){
+  populateMonthSelect();
   renderDashboard();
   renderIncomeList();
   renderExpenseList();
   renderInvestments();
   renderGoals();
+  document.getElementById('income-month-label').textContent = getCurrentMonth().label;
+  document.getElementById('expense-month-label').textContent = getCurrentMonth().label;
 }
 
 function renderDashboard(){
   const today=new Date();
+  const current = getCurrentMonth();
+  const previous = getPreviousMonth();
   document.getElementById('dash-date').textContent='Updated '+today.toLocaleDateString('en-NZ',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('kickoff-title').textContent = current.closed ? 'Closed month' : 'Open month';
+  document.getElementById('dash-month-label').textContent = current.label + (previous ? ' vs ' + previous.label : '');
+
   const inc=totalMonthlyIncome();
   const exp=totalMonthlyExpenses();
   const surplus=inc-exp;
   const inv=totalInvestments();
-  document.getElementById('dash-month-label').textContent='Monthly view';
-  document.getElementById('dash-cards').innerHTML=`
-    <div class="card blue"><div class="card-label"><i class="ti ti-cash" aria-hidden="true"></i> Monthly income</div><div class="card-value">${formatNZD(inc)}</div><div class="card-sub">Across ${state.income.length} source(s)</div></div>
-    <div class="card red"><div class="card-label"><i class="ti ti-receipt" aria-hidden="true"></i> Monthly expenses</div><div class="card-value">${formatNZD(exp)}</div><div class="card-sub">Across ${state.expenses.length} items</div></div>
-    <div class="card ${surplus>=0?'green':'red'}"><div class="card-label"><i class="ti ti-wallet" aria-hidden="true"></i> Monthly surplus</div><div class="card-value">${formatNZD(surplus)}</div><div class="card-sub">${inc>0?Math.round(surplus/inc*100):0}% of income saved</div></div>
-    <div class="card purple"><div class="card-label"><i class="ti ti-trending-up" aria-hidden="true"></i> Portfolio value</div><div class="card-value">${formatNZD(inv)}</div><div class="card-sub">${state.investments.length} holdings</div></div>
+  const prevIncome = previous ? totalMonthlyIncome(getPreviousMonthKey(state.currentMonth)) : 0;
+  const prevExpense = previous ? totalMonthlyExpenses(getPreviousMonthKey(state.currentMonth)) : 0;
+
+  document.getElementById('dash-cards').innerHTML = `
+    <div class="card blue"><div class="card-label">Monthly income</div><div class="card-value">${formatNZD(inc)}</div><div class="card-sub">vs prev ${prevIncome ? ((inc-prevIncome)>=0?'+':'')+formatNZD(inc-prevIncome) : 'No prior month'}</div></div>
+    <div class="card red"><div class="card-label">Monthly expenses</div><div class="card-value">${formatNZD(exp)}</div><div class="card-sub">vs prev ${prevExpense ? ((exp-prevExpense)>=0?'+':'')+formatNZD(exp-prevExpense) : 'No prior month'}</div></div>
+    <div class="card ${surplus>=0?'green':'red'}"><div class="card-label">Monthly surplus</div><div class="card-value">${formatNZD(surplus)}</div><div class="card-sub">${inc>0?Math.round(surplus/inc*100):0}% of income saved</div></div>
+    <div class="card purple"><div class="card-label">Portfolio value</div><div class="card-value">${formatNZD(inv)}</div><div class="card-sub">${state.investments.length} holdings</div></div>
   `;
 
-  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const curMonth=today.getMonth();
-  const labels=Array.from({length:6},(_,i)=>months[(curMonth-5+i+12)%12]);
-  const incData=labels.map(()=>Math.round(inc));
-  const expData=labels.map((_,i)=>Math.round(exp*(0.92+i*0.016)));
+  const review = getCarryReview();
+  document.getElementById('kickoff-summary').innerHTML = `
+    <span class="month-chip">${current.label}</span>
+    <span class="month-chip">${current.closed ? 'Closed' : 'Open'}</span>
+    <span class="month-chip">${review.carriedIncome} income copied</span>
+    <span class="month-chip">${review.carriedExpenses} expenses copied</span>
+    <span class="month-chip">${review.newExpenses} new expense item(s)</span>
+  `;
 
-  if(cashflowChart)cashflowChart.destroy();
-  cashflowChart=new Chart(document.getElementById('cashflowChart'),{
+  const rows = getComparisonRows();
+  document.getElementById('comparison-list').innerHTML = rows.map(r=>`
+    <div class="compare-row">
+      <div class="compare-left">
+        <div class="compare-title">${r.title}</div>
+        <div class="compare-sub">${r.meta}</div>
+      </div>
+      <div class="compare-right">
+        <div>${formatNZD(r.current)} now</div>
+        <div style="color:${r.delta>=0?'var(--green)':'var(--red)'}">${r.delta>=0?'+':''}${formatNZD(r.delta)} vs previous</div>
+      </div>
+    </div>
+  `).join('');
+
+  const carryItems = [
+    ...current.income.filter(x=>x.carry).map(x=>({name:x.name, meta:'Income · '+x.type, source:x.source})),
+    ...current.expenses.filter(x=>x.carry).map(x=>({name:x.name, meta:'Expense · '+x.type, source:x.source}))
+  ];
+  document.getElementById('carry-review').innerHTML = carryItems.length ? carryItems.map(x=>`
+    <div class="compare-row">
+      <div class="compare-left">
+        <div class="compare-title">${x.name}</div>
+        <div class="compare-sub">${x.meta}</div>
+      </div>
+      <div class="compare-right">
+        <span class="badge badge-${x.source==='carry-forward'?'blue':'gray'}">${x.source==='carry-forward'?'Copied':'Added this month'}</span>
+      </div>
+    </div>
+  `).join('') : `<div class="empty-state"><i class="ti ti-repeat"></i>No carry-forward items yet</div>`;
+
+  const keys = monthKeysSorted();
+  const labels = keys.slice(-6).map(getMonthLabel);
+  const incomeData = keys.slice(-6).map(k=>Math.round(totalMonthlyIncome(k)));
+  const expenseData = keys.slice(-6).map(k=>Math.round(totalMonthlyExpenses(k)));
+
+  if(cashflowChart) cashflowChart.destroy();
+  cashflowChart = new Chart(document.getElementById('cashflowChart'),{
     type:'bar',
     data:{labels,datasets:[
-      {label:'Income',data:incData,backgroundColor:'#b5d0f0',borderRadius:4},
-      {label:'Expenses',data:expData,backgroundColor:'#f5c4bc',borderRadius:4},
+      {label:'Income',data:incomeData,backgroundColor:'#b5d0f0',borderRadius:4},
+      {label:'Expenses',data:expenseData,backgroundColor:'#f5c4bc',borderRadius:4}
     ]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'$'+Math.round(v/1000)+'k'},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false}}}}
   });
 
   const catMap={};
-  state.expenses.forEach(e=>{const k=e.cat;catMap[k]=(catMap[k]||0)+toMonthly(e.amount,e.freq)});
+  current.expenses.forEach(e=>{ catMap[e.cat]=(catMap[e.cat]||0)+toMonthly(e.amount,e.freq); });
   const catKeys=Object.keys(catMap);
-  if(expenseDonut)expenseDonut.destroy();
+  if(expenseDonut) expenseDonut.destroy();
   if(catKeys.length>0){
-    expenseDonut=new Chart(document.getElementById('expenseDonut'),{
+    expenseDonut = new Chart(document.getElementById('expenseDonut'),{
       type:'doughnut',
       data:{labels:catKeys,datasets:[{data:catKeys.map(k=>Math.round(catMap[k])),backgroundColor:catKeys.map(k=>catColors[k]||'#888'),borderWidth:2,borderColor:'#fff'}]},
       options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'right',labels:{font:{size:12},padding:8}}}}
@@ -503,81 +746,90 @@ function renderDashboard(){
   }
 
   const goalsDiv=document.getElementById('dash-goals');
-  if(state.goals.length===0){goalsDiv.innerHTML='<div class="empty-state"><i class="ti ti-flag" aria-hidden="true"></i>No goals yet — add one in Goals &amp; Travel</div>';return}
+  if(state.goals.length===0){
+    goalsDiv.innerHTML='<div class="empty-state"><i class="ti ti-flag" aria-hidden="true"></i>No goals yet — add one in Goals & Travel</div>';
+    return;
+  }
   goalsDiv.innerHTML=state.goals.map(g=>{
     const p=pct(g.saved,g.target);
     const remaining=g.target-g.saved;
     const mos=g.monthly>0?Math.ceil(remaining/g.monthly):null;
-    return`<div style="margin-bottom:14px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+    return `<div style="margin-bottom:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;gap:10px">
         <span style="font-size:14px;font-weight:500">${g.name}</span>
         <span style="font-size:13px;color:var(--text2)">${formatNZD(g.saved)} / ${formatNZD(g.target)} · <b>${p}%</b>${mos?' · ~'+mos+'mo':''}</span>
       </div>
       <div class="progress-bar"><div class="progress-fill" style="width:${p}%;background:${p>=100?'#2d7a4f':p>60?'#1a5fa8':'#b85c00'}"></div></div>
-    </div>`}).join('');
+    </div>`;
+  }).join('');
 }
 
 function renderIncomeList(){
+  const month = getCurrentMonth();
   const monthlyTotal=totalMonthlyIncome();
   document.getElementById('inc-monthly-total').textContent='Total: '+formatNZD(monthlyTotal)+'/mo';
   const list=document.getElementById('income-list');
-  if(state.income.length===0){list.innerHTML='<div class="empty-state"><i class="ti ti-cash" aria-hidden="true"></i>No income sources yet</div>';return}
-  list.innerHTML=state.income.map(x=>`
+  if(month.income.length===0){list.innerHTML='<div class="empty-state"><i class="ti ti-cash" aria-hidden="true"></i>No income sources yet</div>';return}
+  list.innerHTML=month.income.map(x=>`
     <div class="list-item">
       <div class="list-icon" style="background:var(--blue-bg);color:var(--blue)"><i class="ti ti-cash" aria-hidden="true"></i></div>
       <div class="list-info">
-        <div class="list-name">${x.name} <span class="freq-badge">${freqLabel(x.freq)}</span></div>
-        <div class="list-meta">${formatNZD(toMonthly(x.amount,x.freq))}/mo equivalent</div>
+        <div class="list-name">${x.name} <span class="freq-badge">${freqLabel(x.freq)}</span> <span class="badge badge-${badgeForType(x.type)}">${x.type}</span></div>
+        <div class="list-meta">${formatNZD(toMonthly(x.amount,x.freq))}/mo equivalent · ${x.carry?'carry next month':'do not carry'} · ${x.source==='carry-forward'?'copied from previous month':'added this month'}</div>
       </div>
       <div class="list-amount" style="color:var(--green)">${formatNZD(x.amount)}</div>
       <div class="list-actions"><button class="btn btn-sm btn-danger" onclick="deleteIncome(${x.id})" aria-label="Delete"><i class="ti ti-trash"></i></button></div>
-    </div>`).join('');
+    </div>
+  `).join('');
 }
 
 function renderExpenseList(){
+  const month = getCurrentMonth();
   const monthlyTotal=totalMonthlyExpenses();
   document.getElementById('exp-monthly-total').textContent='Total: '+formatNZD(monthlyTotal)+'/mo';
   const list=document.getElementById('expense-list');
-  if(state.expenses.length===0){list.innerHTML='<div class="empty-state"><i class="ti ti-receipt" aria-hidden="true"></i>No expenses yet</div>';return}
-  list.innerHTML=state.expenses.map(x=>`
+  if(month.expenses.length===0){list.innerHTML='<div class="empty-state"><i class="ti ti-receipt" aria-hidden="true"></i>No expenses yet</div>';return}
+  list.innerHTML=month.expenses.map(x=>`
     <div class="list-item">
       <div class="list-icon" style="background:${catColors[x.cat]||'#888'}22;color:${catColors[x.cat]||'#888'}"><i class="ti ti-${catIcon(x.cat)}" aria-hidden="true"></i></div>
       <div class="list-info">
-        <div class="list-name">${x.name} <span class="freq-badge">${freqLabel(x.freq)}</span></div>
-        <div class="list-meta"><span class="tag">${x.cat}</span> &nbsp; ${formatNZD(toMonthly(x.amount,x.freq))}/mo equivalent</div>
+        <div class="list-name">${x.name} <span class="freq-badge">${freqLabel(x.freq)}</span> <span class="badge badge-${badgeForType(x.type)}">${x.type}</span></div>
+        <div class="list-meta"><span class="tag">${x.cat}</span> &nbsp; ${formatNZD(toMonthly(x.amount,x.freq))}/mo equivalent · ${x.carry?'carry next month':'do not carry'} · ${x.source==='carry-forward'?'copied from previous month':'added this month'}</div>
       </div>
       <div class="list-amount" style="color:var(--red)">${formatNZD(x.amount)}</div>
       <div class="list-actions"><button class="btn btn-sm btn-danger" onclick="deleteExpense(${x.id})" aria-label="Delete"><i class="ti ti-trash"></i></button></div>
-    </div>`).join('');
+    </div>
+  `).join('');
 }
-
-function catIcon(c){return{Housing:'home',Food:'salad',Transport:'car',Utilities:'bolt',Health:'heart',Entertainment:'device-gamepad',Clothing:'shirt',Other:'tag'}[c]||'tag'}
 
 function renderInvestments(){
   const total=totalInvestments();
-  const totalCost=state.investments.reduce((s,x)=>s+x.cost,0);
+  const totalCost=state.investments.reduce((s,x)=>s+(x.cost||0),0);
   const gain=total-totalCost;
   document.getElementById('inv-total-label').textContent='Total: '+formatNZD(total);
   const list=document.getElementById('investment-list');
   if(state.investments.length===0){list.innerHTML='<div class="empty-state"><i class="ti ti-trending-up" aria-hidden="true"></i>No holdings yet</div>';}
-  else{list.innerHTML=state.investments.map(x=>{
-    const g=x.value-x.cost;
-    const gp=x.cost>0?Math.round(g/x.cost*100):0;
-    return`<div class="list-item">
-      <div class="list-icon" style="background:var(--purple-bg);color:var(--purple)"><i class="ti ti-${invIcon(x.type)}" aria-hidden="true"></i></div>
-      <div class="list-info">
-        <div class="list-name">${x.name} <span class="badge badge-purple">${x.type}</span></div>
-        <div class="list-meta">Cost: ${formatNZD(x.cost)} · ${x.contrib>0?'Contrib: '+formatNZD(x.contrib)+'/mo':'No regular contribution'}${x.notes?' · '+x.notes:''}</div>
-      </div>
-      <div style="text-align:right;min-width:100px">
-        <div class="list-amount">${formatNZD(x.value)}</div>
-        <div style="font-size:12px;color:${g>=0?'var(--green)':'var(--red)'}">${g>=0?'+':''}${formatNZD(g)} (${gp}%)</div>
-      </div>
-      <div class="list-actions"><button class="btn btn-sm btn-danger" onclick="deleteInvestment(${x.id})" aria-label="Delete"><i class="ti ti-trash"></i></button></div>
-    </div>`}).join('')}
+  else{
+    list.innerHTML=state.investments.map(x=>{
+      const g=(x.value||0)-(x.cost||0);
+      const gp=(x.cost||0)>0?Math.round(g/x.cost*100):0;
+      return `<div class="list-item">
+        <div class="list-icon" style="background:var(--purple-bg);color:var(--purple)"><i class="ti ti-${invIcon(x.type)}" aria-hidden="true"></i></div>
+        <div class="list-info">
+          <div class="list-name">${x.name} <span class="badge badge-purple">${x.type}</span></div>
+          <div class="list-meta">Cost: ${formatNZD(x.cost)} · ${x.contrib>0?'Contrib: '+formatNZD(x.contrib)+'/mo':'No regular contribution'}${x.notes?' · '+x.notes:''}</div>
+        </div>
+        <div style="text-align:right;min-width:100px">
+          <div class="list-amount">${formatNZD(x.value)}</div>
+          <div style="font-size:12px;color:${g>=0?'var(--green)':'var(--red)'}">${g>=0?'+':''}${formatNZD(g)} (${gp}%)</div>
+        </div>
+        <div class="list-actions"><button class="btn btn-sm btn-danger" onclick="deleteInvestment(${x.id})" aria-label="Delete"><i class="ti ti-trash"></i></button></div>
+      </div>`;
+    }).join('');
+  }
 
   const typeMap={};
-  state.investments.forEach(x=>{typeMap[x.type]=(typeMap[x.type]||0)+x.value});
+  state.investments.forEach(x=>{typeMap[x.type]=(typeMap[x.type]||0)+(x.value||0)});
   const typeKeys=Object.keys(typeMap);
   const typeColors=['#5b3fa0','#2d7a4f','#1a5fa8','#b85c00','#1a8a9a','#c0392b','#6b6560'];
   if(invDonut)invDonut.destroy();
@@ -604,8 +856,6 @@ function renderInvestments(){
     </div>`;
 }
 
-function invIcon(t){return{Stocks:'chart-line',Savings:'piggy-bank',KiwiSaver:'shield-check',ETF:'chart-area-line',Property:'home',Crypto:'currency-bitcoin',Other:'star'}[t]||'star'}
-
 function renderGoals(){
   const list=document.getElementById('goals-list');
   if(state.goals.length===0){list.innerHTML='<div class="section"><div class="empty-state"><i class="ti ti-flag" aria-hidden="true"></i>No goals yet — add one above</div></div>';return}
@@ -615,7 +865,7 @@ function renderGoals(){
     const mos=g.monthly>0?Math.ceil(remaining/g.monthly):null;
     const daysLeft=g.date?Math.ceil((new Date(g.date)-new Date())/(1000*60*60*24)):null;
     const barColor=p>=100?'#2d7a4f':p>60?'#1a5fa8':'#b85c00';
-    return`<div class="goal-card">
+    return `<div class="goal-card">
       <div class="goal-header">
         <div>
           <div class="goal-name">${g.name} <span class="badge badge-${goalBadge(g.type)}">${g.type}</span></div>
@@ -623,20 +873,19 @@ function renderGoals(){
         </div>
         <button class="btn btn-ghost btn-sm" onclick="deleteGoal(${g.id})" aria-label="Delete goal"><i class="ti ti-trash"></i></button>
       </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;gap:10px">
         <div class="goal-amounts"><strong>${formatNZD(g.saved)}</strong> of ${formatNZD(g.target)}</div>
         <div style="font-size:13px;color:var(--text2)">${p}% · ${formatNZD(remaining)} to go${mos?' · ~'+mos+' months':''}</div>
       </div>
       <div class="progress-bar"><div class="progress-fill" style="width:${p}%;background:${barColor}"></div></div>
-      <div style="margin-top:10px;display:flex;align-items:center;gap:8px">
+      <div style="margin-top:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
         <label style="font-size:12px;color:var(--text2);white-space:nowrap">Update saved:</label>
         <input type="number" value="${g.saved}" min="0" step="10" style="max-width:130px" onchange="updateGoalSaved(${g.id},this.value)">
         ${g.monthly>0?`<span style="font-size:12px;color:var(--text2)">${formatNZD(g.monthly)}/mo allocated</span>`:''}
       </div>
-    </div>`}).join('');
+    </div>`;
+  }).join('');
 }
-
-function goalBadge(t){return{Travel:'blue',Emergency:'amber',Purchase:'green',Property:'purple',Other:'green'}[t]||'blue'}
 
 renderAll();
 </script>
